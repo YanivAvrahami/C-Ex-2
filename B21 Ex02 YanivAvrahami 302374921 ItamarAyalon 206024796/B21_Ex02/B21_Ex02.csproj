@@ -32,10 +32,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Board.cs" />
     <Compile Include="BoardItem.cs" />
+    <Compile Include="BoardViewer.cs" />
+    <Compile Include="eEndGameState.cs" />
+    <Compile Include="ePlayMode.cs" />
     <Compile Include="eSymbol.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
+    <Compile Include="XMixDrix.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
