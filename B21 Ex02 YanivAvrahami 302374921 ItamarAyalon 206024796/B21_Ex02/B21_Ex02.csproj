@@ -33,7 +33,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Data Structures\Board.cs" />
-    <Compile Include="Data Structures\BoardItem.cs" />
     <Compile Include="Data Structures\BoardViewer.cs" />
     <Compile Include="enum\eEndGameState.cs" />
     <Compile Include="enum\ePlayMode.cs" />
