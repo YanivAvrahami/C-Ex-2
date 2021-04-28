@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace B21_Ex02
+﻿namespace B21_Ex02
 {
-    class eEndGameState
+    public enum eEndGameState
     {
+        Draw,
+        Win,
+        Departure,
     }
 }
