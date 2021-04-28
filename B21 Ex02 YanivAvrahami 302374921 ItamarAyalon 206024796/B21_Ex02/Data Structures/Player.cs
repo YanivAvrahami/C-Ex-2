@@ -29,5 +29,11 @@
                 m_Symbol = value;
             }
         }
+
+        public Player(eSymbol i_Symbol)
+        {
+            m_Symbol = i_Symbol;
+            m_Score = 0;
+        }
     }
 }

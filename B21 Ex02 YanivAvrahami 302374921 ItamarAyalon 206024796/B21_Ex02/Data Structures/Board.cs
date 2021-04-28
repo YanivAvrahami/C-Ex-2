@@ -4,7 +4,7 @@
     {
         private struct BoardItem
         {
-            private bool isOccupied;
+            private bool m_IsOccupied;
             private eSymbol m_Symbol;
 
             public eSymbol Symbol
@@ -23,33 +23,46 @@
             {
                 get
                 {
-                    return isOccupied;
+                    return m_IsOccupied;
                 }
                 set
                 {
-                    isOccupied = true;
+                    m_IsOccupied = value;
                 }
             }
 
             public BoardItem(eSymbol i_Symbol)
             {
-                isOccupied = true;
+                m_IsOccupied = true;
                 m_Symbol = i_Symbol;
             }
         }
 
         private readonly BoardItem[,] m_Board;
 
-        public int Size
+        private readonly int m_Width;
+        private readonly int m_Height;
+
+        public int Width
         {
             get
             {
-                return m_Board.Length;
+                return m_Width;
+            }
+        }
+
+        public int Height
+        {
+            get
+            {
+                return m_Height;
             }
         }
 
         public Board(int i_Rows, int i_Columns)
         {
+            m_Width = i_Columns;
+            m_Height = i_Rows;
             m_Board = new BoardItem[i_Rows,i_Columns];
         }
 
@@ -70,9 +83,9 @@
 
         public void Clear()
         {
-            for (int i = 0; i < m_Board.Length; i++)
+            for (int i = 0; i < m_Width; i++)
             {
-                for (int j = 0; j < m_Board.Length; j++)
+                for (int j = 0; j < m_Height; j++)
                 {
                     Delete(i, j);
                 }
