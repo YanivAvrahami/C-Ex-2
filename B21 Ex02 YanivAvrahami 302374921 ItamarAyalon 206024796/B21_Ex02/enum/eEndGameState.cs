@@ -4,6 +4,6 @@
     {
         Draw,
         Win,
-        Departure,
+        Left,
     }
 }
