@@ -1,81 +1,81 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace B21_Ex02
 {
     class XMixDrix
     {
+        private bool m_Running;
         private Board m_Board;
-        private Player m_Player1;
-        private Player m_Player2;
-        private Player m_CurrentPlayer;
-        private Player m_Winner;
-        private bool m_IsGameRunning;
+        private Player m_PlayerOne;
+        private Player m_PlayerTwo;
+        private Player m_CurrentPlayerTurn;
         private ePlayMode ePlayMode;
         private eGameState eGameState;
 
         public XMixDrix()
         {
+            m_PlayerOne = null;
+            m_PlayerTwo = null;
+            m_CurrentPlayerTurn = null;
+            m_Running = true;
             m_Board = null;
-            m_Player1 = null;
-            m_Player2 = null;
-            m_IsGameRunning = true;
         }
 
-        public void Run()
+        public void Start()
         {
-            initializeSettings();
+            startMenu();
+            startGame();
+        }
+
+        private void startGame()
+        {
+            eGameState = eGameState.InProgress;
             BoardViewer.DisplayOnConsole(m_Board);
 
-            while (m_IsGameRunning)
+            while (m_Running)
             {
-                playTurnAndUpdateGameState();
-                Console.Clear();
+                playTurn();
                 BoardViewer.DisplayOnConsole(m_Board);
-                
-                if(isEndOfRound())
-                {
-                    switch (eGameState)
-                    {
-                        case eGameState.Win:
-                            m_Winner.Score++;
-                            displayScoreBoard();
-                            break;
-                        case eGameState.Draw:
-                            displayScoreBoard();
-                            break;
-                        case eGameState.Left:
-                            m_IsGameRunning = false;
-                            break;
-                    }
 
-                    bool isExtraRound = getExtraRoundChoiceFromPlayer();
-                    if(isExtraRound == false)
+                if (eGameState != eGameState.InProgress)
+                {
+                    if(eGameState == eGameState.Win)
                     {
-                        m_IsGameRunning = false;
+                        m_CurrentPlayerTurn.Score++;
+                        displayScoreBoard();
+                    }
+                    else if (eGameState == eGameState.Draw)
+                    {
+                        displayScoreBoard();
                     }
                     else
                     {
+                        m_Running = false;
+                    }
+                   
+                    bool extraRound = getExtraRoundDecisionFromPlayer();
+                    if (extraRound == true)
+                    {
                         m_Board.Clear();
+                    }
+                    else
+                    {
+                        m_Running = false;
                     }
                 }
             }
         }
 
-        private void initializeSettings()
+        private void startMenu()
         {
-            getBoardFromUser();
-            getPlayModeFromUser();
+            setBoardByUser();
+            setPlayModeByUser();
             initializePlayers();
-            eGameState = eGameState.InProgress;
         }
 
-        private bool isEndOfRound()
-        {
-            return eGameState == eGameState.Draw || eGameState == eGameState.Left || eGameState == eGameState.Win;
-        }
-
-        private bool getExtraRoundChoiceFromPlayer()
+        private bool getExtraRoundDecisionFromPlayer()
         {
             bool isExtraRound = false;
             Console.WriteLine("Want to play more? (y/n): ");
@@ -92,18 +92,18 @@ namespace B21_Ex02
 
         private void initializePlayers()
         {
-            m_Player1 = new Player(eSymbol.O, ePlayerTypeEnum.Human);
+            m_PlayerOne = new Player(eSymbol.O, ePlayerTypeEnum.Human);
 
             if (ePlayMode == ePlayMode.SinglePlayer)
             {
-                m_Player2 = new Player(eSymbol.X, ePlayerTypeEnum.Human);
+                m_PlayerTwo = new Player(eSymbol.X, ePlayerTypeEnum.Human);
             }
             else
             {
-                m_Player2 = new Player(eSymbol.X, ePlayerTypeEnum.Computer);
+                m_PlayerTwo = new Player(eSymbol.X, ePlayerTypeEnum.Computer);
             }
 
-            m_CurrentPlayer = m_Player1;
+            m_CurrentPlayerTurn = m_PlayerOne;
         }
 
         private void displayScoreBoard()
@@ -113,98 +113,127 @@ namespace B21_Ex02
             stringToDisplay.AppendLine();
             stringToDisplay.Append("___________");
             stringToDisplay.AppendLine();
-            stringToDisplay.Append($"Player 1 score: {m_Player1.Score}");
+            stringToDisplay.Append($"Player 1 score: {m_PlayerOne.Score}");
             stringToDisplay.AppendLine();
-            stringToDisplay.Append($"Player 2 score: {m_Player2.Score}");
+            stringToDisplay.Append($"Player 2 score: {m_PlayerTwo.Score}");
             stringToDisplay.AppendLine();
         }
 
-        private void playTurnAndUpdateGameState()
+        private void playTurn()
         {
-            if(m_CurrentPlayer.PlayerType == ePlayerTypeEnum.Computer)
+            if(m_CurrentPlayerTurn.PlayerType == ePlayerTypeEnum.Computer)
             {
                 // Computer turn logic
             }
             else
             {
                 // Human turn logic
-                getValidItemPositionFromPlayer(out int row, out int col);
-                m_Board.SetItem(m_CurrentPlayer.Symbol, row, col);
+                getFreePositionFromPlayer(out int row, out int col);
+                m_Board.SetItem(m_CurrentPlayerTurn.Symbol, row, col);
 
-                if (BoardUtils.IsBoardHaveFullSequence(m_Board, row, col) == true)
+                if (BoardUtils.IsBoardHaveFullSequence(m_Board, row, col))
                 {
                     eGameState = eGameState.Win;
-                    m_Winner = m_CurrentPlayer;
                 }
-                else if (BoardUtils.IsBoardFull(m_Board) == true)
+                else if (BoardUtils.IsBoardFull(m_Board))
                 {
                     eGameState = eGameState.Draw;
                 }
             }
 
-            swapTurns();
+            setNextPlayerTurn();
         }
 
-        private void swapTurns()
+        private void setNextPlayerTurn()
         {
-            if (m_CurrentPlayer == m_Player1)
+            m_CurrentPlayerTurn = (m_CurrentPlayerTurn == m_PlayerOne) ? m_PlayerTwo : m_PlayerOne;
+        }
+
+        private void getFreePositionFromPlayer(out int o_Row, out int o_Col)
+        {
+            int row, col;
+            getPositionFromUser(out row, out col);
+
+            while (m_Board.IsOccupied(row, col))
             {
-                m_CurrentPlayer = m_Player2;
+                Console.WriteLine("\nInvalid position, try again: \n");
+                getPositionFromUser(out row, out col);
             }
-            else
+
+            o_Row = row;
+            o_Col = col;
+        }
+
+        private void getPositionFromUser(out int o_Row, out int o_Col)
+        {
+            int row = 0, col = 0;
+
+            Console.Write("Row: ");
+            bool good = false;
+            while (!good)
             {
-                m_CurrentPlayer = m_Player1;
+                string inputStr = Console.ReadLine();
+                good = int.TryParse(inputStr, out row);
+                Console.CursorTop--;
+                int k_Space = 8;
+                Console.CursorLeft += k_Space;
+                if (!good)
+                {
+                    Console.Write("Invalid input, try again: ");
+                }
             }
-        }
 
-        private void getValidItemPositionFromPlayer(out int o_Row, out int o_Col)
-        {
-            getPlayerItemPositionChoice(out o_Row, out o_Col);
-
-            while (m_Board.IsOccupied(o_Row, o_Col) == true)
+            Console.Write("Col: ");
+            good = false;
+            while (!good)
             {
-                Console.WriteLine();
-                Console.WriteLine("Invalid placement, please try again..");
-                Console.WriteLine();
-                getPlayerItemPositionChoice(out o_Row, out o_Col);
+                good = int.TryParse(Console.ReadLine(), out col);
+                if (!good)
+                {
+                    Console.Write("Invalid input, try again: ");
+                }
             }
+
+            o_Row = row - 1;
+            o_Col = col - 1;
         }
 
-        private void getPlayerItemPositionChoice(out int o_Row, out int o_Col)
+        private void setPlayModeByUser()
         {
-            Console.WriteLine("Enter row: ");
-            o_Row = int.Parse(Console.ReadLine());
+            string msg = "Enter play mode (1-singleplayer, 2-multiplayer): ";
+            Console.Write(msg);
 
-            Console.WriteLine("Enter col: ");
-            o_Col = int.Parse(Console.ReadLine());
-        }
-
-        private void getPlayModeFromUser()
-        {
-            Console.WriteLine("Enter play mode (1-singleplayer, 2-multiplayer): ");
-
-            string userInput = Console.ReadLine();
-
-            int.TryParse(userInput, out int playModeInput);
-
-            switch (playModeInput)
+            int playMode;
+            while (!int.TryParse(Console.ReadLine(), out playMode) || playMode != 1 && playMode != 2)
             {
-                case 1:
-                    ePlayMode = ePlayMode.SinglePlayer;
-                    break;
-                case 2:
-                    ePlayMode = ePlayMode.MultiPlayer;
-                    break;
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                ConsoleUtils.ClearCurrentLine();
+                Console.WriteLine(msg);
+                Console.Write("Invalid input");
+                Console.CursorTop--;
+                Console.CursorLeft = msg.Length;
             }
-            Console.Clear();
+            
+            ePlayMode = (playMode == 1) ? ePlayMode.SinglePlayer : ePlayMode.MultiPlayer;
         }
 
-        private void getBoardFromUser()
+        private void setBoardByUser()
         {
-            Console.WriteLine("Enter board size: ");
-            int size = int.Parse(Console.ReadLine());
-            m_Board = new Board(size, size);
-            Console.Clear();
+            string msg = "Enter board size between 3 - 9: ";
+            Console.Write(msg);
+
+            int boardSize;
+            while(!int.TryParse(Console.ReadLine(), out boardSize) || boardSize > 9 || boardSize < 3)
+            {
+                Console.SetCursorPosition(0, Console.CursorTop - 1);
+                ConsoleUtils.ClearCurrentLine();
+                Console.WriteLine(msg);
+                Console.Write("Invalid input");
+                Console.CursorTop--;
+                Console.CursorLeft = msg.Length;
+            }
+
+            m_Board = new Board(boardSize, boardSize);
         }
     }
 }

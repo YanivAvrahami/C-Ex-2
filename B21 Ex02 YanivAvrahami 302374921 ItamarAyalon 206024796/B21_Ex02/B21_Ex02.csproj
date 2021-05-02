@@ -33,6 +33,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BoardUtils.cs" />
+    <Compile Include="ConsoleUtils.cs" />
     <Compile Include="Data Structures\Board.cs" />
     <Compile Include="Data Structures\BoardViewer.cs" />
     <Compile Include="Data Structures\NPC.cs" />

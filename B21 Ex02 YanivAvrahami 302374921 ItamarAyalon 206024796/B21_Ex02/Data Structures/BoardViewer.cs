@@ -7,6 +7,7 @@ namespace B21_Ex02
     {
         public static void DisplayOnConsole(Board i_Board)
         {
+            Console.Clear();
             StringBuilder boardStrBulder = new StringBuilder();
 
             buildFirstRowColumns(boardStrBulder, i_Board.Width);
