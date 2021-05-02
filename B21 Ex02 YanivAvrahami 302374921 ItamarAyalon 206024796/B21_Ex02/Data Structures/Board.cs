@@ -2,7 +2,7 @@
 {
     public class Board
     {
-        private struct BoardItem
+        public struct BoardItem
         {
             private bool m_IsOccupied;
             private eSymbol m_Symbol;
@@ -39,7 +39,6 @@
         }
 
         private readonly BoardItem[,] m_Board;
-
         private readonly int m_Width;
         private readonly int m_Height;
 
@@ -66,20 +65,38 @@
             m_Board = new BoardItem[i_Rows,i_Columns];
         }
 
-        public void SetItem(eSymbol i_Symbol, int i_Row, int i_Column)
+        public void SetItem(eSymbol i_Symbol, Position i_Pos)
         {
-            m_Board[i_Row, i_Column] = new BoardItem(i_Symbol);
+            m_Board[i_Pos.Row, i_Pos.Column] = new BoardItem(i_Symbol);
         }
 
-        public eSymbol GetItem(int i_Row, int i_Column)
+        public void SetItem(eSymbol i_Symbol, int i_Row, int i_Col)
         {
-            return m_Board[i_Row, i_Column].Symbol;
+            m_Board[i_Row, i_Col] = new BoardItem(i_Symbol);
         }
 
-        public void Delete(int i_Row, int i_Column)
+
+        public eSymbol GetItem(Position i_Pos)
         {
-            m_Board[i_Row, i_Column].IsOccupied = false;
+            return m_Board[i_Pos.Row, i_Pos.Column].Symbol;
         }
+
+        public BoardItem GetItem(int i_Row, int i_Col)
+        {
+            return m_Board[i_Row, i_Col];
+        }
+
+
+        public void Delete(Position i_Pos)
+        {
+            m_Board[i_Pos.Row, i_Pos.Column].IsOccupied = false;
+        }
+
+        public void Delete(int i_Row, int i_Col)
+        {
+            m_Board[i_Row, i_Col].IsOccupied = false;
+        }
+
 
         public void Clear()
         {

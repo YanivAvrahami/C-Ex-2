@@ -1,6 +1,6 @@
 ﻿namespace B21_Ex02
 {
-    public enum ePlayerTypeEnum
+    public enum ePlayerType
     {
         Human,
         Computer

@@ -2,11 +2,18 @@
 {
     public class Player
     {
-        private ePlayerTypeEnum m_PlayerType;
+        private string m_Name;
+        private ePlayerType m_PlayerType;
         private int m_Score;
         private eSymbol m_Symbol;
 
-        public ePlayerTypeEnum PlayerType
+        public string Name
+        {
+            get { return m_Name; }
+            set { m_Name = value; }
+        }
+
+        public ePlayerType PlayerType
         {
             get
             {
@@ -42,8 +49,9 @@
             }
         }
 
-        public Player(eSymbol i_Symbol, ePlayerTypeEnum i_PlayerType)
+        public Player(eSymbol i_Symbol, ePlayerType i_PlayerType, string i_Name)
         {
+            m_Name = i_Name;
             m_Symbol = i_Symbol;
             m_Score = 0;
             m_PlayerType = i_PlayerType;

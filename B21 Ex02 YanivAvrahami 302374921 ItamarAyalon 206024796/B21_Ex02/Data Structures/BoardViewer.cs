@@ -8,18 +8,18 @@ namespace B21_Ex02
         public static void DisplayOnConsole(Board i_Board)
         {
             Console.Clear();
-            StringBuilder boardStrBulder = new StringBuilder();
+            StringBuilder boardStrBuilder = new StringBuilder();
 
-            buildFirstRowColumns(boardStrBulder, i_Board.Width);
+            buildFirstRowColumns(boardStrBuilder, i_Board.Width);
 
             for (int row = 0; row < i_Board.Height; row++)
             {
-                boardStrBulder.Append($"{row + 1} |");
-                buildCellsInRow(i_Board, boardStrBulder, row);
-                buildNewLine(boardStrBulder, i_Board.Width);
+                boardStrBuilder.Append($"{row + 1} |");
+                buildCellsInRow(i_Board, boardStrBuilder, row);
+                buildNewLine(boardStrBuilder, i_Board.Width);
             }
 
-            Console.WriteLine(boardStrBulder);
+            Console.WriteLine(boardStrBuilder);
         }
 
         private static void buildFirstRowColumns(StringBuilder i_BoardStrBuiler, int i_Columns)
@@ -39,7 +39,7 @@ namespace B21_Ex02
             {
                 if (i_Board.IsOccupied(i_Row, column) == true)
                 {
-                    i_BoardStrBuiler.Append($" {i_Board.GetItem(i_Row, column)} |");
+                    i_BoardStrBuiler.Append($" {i_Board.GetItem(i_Row, column).Symbol} |");
                 }
                 else
                 {

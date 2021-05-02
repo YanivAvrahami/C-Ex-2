@@ -6,7 +6,7 @@ namespace B21_Ex02
 {
     public class BoardUtils
     {
-        public static bool IsBoardFull(Board i_Board)
+        public static bool IsFull(Board i_Board)
         {
             bool isFull = true;
 
@@ -24,74 +24,51 @@ namespace B21_Ex02
             return isFull;
         }
 
-        public static bool IsBoardHaveFullSequence(Board i_Board, int row, int column)
+        public static bool HasCompleteSymbolSequence(Board i_Board, eSymbol i_Symbol, Position i_Pos)
         {
-            eSymbol symbol = i_Board.GetItem(row, column);
+            bool result = hasCompleteSymbolSequenceByOrientation(eOrientation.Horizontal, i_Board, i_Symbol, i_Pos) || 
+                          hasCompleteSymbolSequenceByOrientation(eOrientation.Vertical, i_Board, i_Symbol, i_Pos) ||
+                          hasCompleteSymbolSequenceByOrientation(eOrientation.Ascending, i_Board, i_Symbol, i_Pos) ||
+                          hasCompleteSymbolSequenceByOrientation(eOrientation.Decending, i_Board, i_Symbol, i_Pos);
 
-            return checkRow(symbol, i_Board, row) ||
-                   checkColumn(symbol, i_Board, column) ||
-                   checkDiagonalAscending(symbol, i_Board) ||
-                   checkDiagonalDecending(symbol, i_Board);
+            return result;
         }
 
-        private static bool checkRow(eSymbol i_Symbol, Board i_Board, int row)
+        private static bool hasCompleteSymbolSequenceByOrientation(eOrientation i_Orientation, Board i_Board, eSymbol i_Symbol, Position i_Pos)
         {
-            bool isWon = true;
+            bool result = true;
+
+            int size = (i_Orientation == eOrientation.Horizontal) ? i_Board.Width : i_Board.Height;
+
             for (int i = 0; i < i_Board.Width; i++)
             {
-                if (i_Board.GetItem(row, i) != i_Symbol)
+                Board.BoardItem currentBoardItem;
+
+                if (i_Orientation == eOrientation.Horizontal)
                 {
-                    isWon = false;
+                    currentBoardItem = i_Board.GetItem(i_Pos.Row, i);
+                }
+                else if(i_Orientation == eOrientation.Vertical)
+                {
+                    currentBoardItem = i_Board.GetItem(i_Pos.Column, i);
+                }
+                else if(i_Orientation == eOrientation.Ascending)
+                {
+                    currentBoardItem = i_Board.GetItem(i_Board.Height - 1 - i, i);
+                }
+                else
+                {
+                    currentBoardItem = i_Board.GetItem(i, i);
+                }
+
+                if (!currentBoardItem.IsOccupied || currentBoardItem.Symbol != i_Symbol)
+                {
+                    result = false;
                     break;
                 }
             }
 
-            return isWon;
-        }
-
-        private static bool checkColumn(eSymbol i_Symbol, Board i_Board, int column)
-        {
-            bool isWon = true;
-            for (int i = 0; i < i_Board.Height; i++)
-            {
-                if (i_Board.GetItem(i, column) != i_Symbol)
-                {
-                    isWon = false;
-                    break;
-                }
-            }
-
-            return isWon;
-        }
-
-        private static bool checkDiagonalDecending(eSymbol i_Symbol, Board i_Board)
-        {
-            bool isWon = true;
-            for (int i = 0; i < i_Board.Height; i++)
-            {
-                if (i_Board.GetItem(i, i) != i_Symbol)
-                {
-                    isWon = false;
-                    break;
-                }
-            }
-
-            return isWon;
-        }
-
-        private static bool checkDiagonalAscending(eSymbol i_Symbol, Board i_Board)
-        {
-            bool isWon = true;
-            for (int i = 0; i < i_Board.Height; i++)
-            {
-                if (i_Board.GetItem(i_Board.Height - 1 - i, i) != i_Symbol)
-                {
-                    isWon = false;
-                    break;
-                }
-            }
-
-            return isWon;
+            return result;
         }
     }
 }

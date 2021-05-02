@@ -37,11 +37,13 @@
     <Compile Include="Data Structures\Board.cs" />
     <Compile Include="Data Structures\BoardViewer.cs" />
     <Compile Include="Data Structures\NPC.cs" />
+    <Compile Include="enum\eOrientation.cs" />
     <Compile Include="enum\eGameState.cs" />
     <Compile Include="enum\ePlayMode.cs" />
     <Compile Include="enum\eSymbol.cs" />
     <Compile Include="Data Structures\Player.cs" />
-    <Compile Include="enum\ePlayerTypeEnum.cs" />
+    <Compile Include="enum\ePlayerType.cs" />
+    <Compile Include="Position.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="XMixDrix.cs" />
   </ItemGroup>
