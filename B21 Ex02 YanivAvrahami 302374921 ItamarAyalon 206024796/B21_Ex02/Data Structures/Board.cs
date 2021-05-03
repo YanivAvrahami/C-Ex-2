@@ -50,7 +50,7 @@
         {
             m_Width = i_Columns;
             m_Height = i_Rows;
-            m_Board = new BoardItem[i_Rows,i_Columns];
+            m_Board = new BoardItem[i_Rows, i_Columns];
         }
 
         public void SetItem(eSymbol i_Symbol, Position i_Pos)

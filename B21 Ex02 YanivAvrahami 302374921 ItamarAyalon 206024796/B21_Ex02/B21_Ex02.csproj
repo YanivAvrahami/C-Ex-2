@@ -32,26 +32,27 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="BoardUtils.cs" />
-    <Compile Include="ConsoleUtils.cs" />
+    <Compile Include="Utils\BoardUtils.cs" />
+    <Compile Include="Utils\ConsoleUtils.cs" />
     <Compile Include="Data Structures\BasePlayer.cs" />
     <Compile Include="Data Structures\Board.cs" />
     <Compile Include="Data Structures\BoardViewer.cs" />
     <Compile Include="Data Structures\NPC.cs" />
-    <Compile Include="enum\eOrientation.cs" />
-    <Compile Include="enum\eGameState.cs" />
-    <Compile Include="enum\ePlayMode.cs" />
-    <Compile Include="enum\eSymbol.cs" />
+    <Compile Include="Enum\eOrientation.cs" />
+    <Compile Include="Enum\eGameState.cs" />
+    <Compile Include="Enum\ePlayMode.cs" />
+    <Compile Include="Enum\eSymbol.cs" />
     <Compile Include="Data Structures\Player.cs" />
-    <Compile Include="enum\ePlayerType.cs" />
-    <Compile Include="Position.cs" />
+    <Compile Include="Enum\ePlayerType.cs" />
+    <Compile Include="Data Structures\Position.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="XMixDrix.cs" />
+    <Compile Include="Core\XMixDrix.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Ex02.ConsoleUtils">
       <HintPath>..\..\..\..\..\..\Temp\Ex02.ConsoleUtils.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

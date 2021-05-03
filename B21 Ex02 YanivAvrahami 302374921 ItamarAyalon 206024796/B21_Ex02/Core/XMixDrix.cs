@@ -225,7 +225,7 @@ namespace B21_Ex02
             char answer = stringInput[0];
             bool isExtraRound = false;
 
-            if(answer == 'y')
+            if (answer == 'y')
             {
                 isExtraRound = true;
             }
@@ -246,10 +246,10 @@ namespace B21_Ex02
                 ConsoleUtils.ReportInvalid(msg);
                 inputString = Console.ReadLine();
             }
-                
+
             int.TryParse(inputString, out playMode);
             m_PlayMode = (playMode == 1) ? ePlayMode.SinglePlayer : ePlayMode.MultiPlayer;
-            
+
         }
 
         private void getBoardChoice()
@@ -264,7 +264,7 @@ namespace B21_Ex02
                 ConsoleUtils.ReportInvalid(msg);
                 inputString = Console.ReadLine();
             }
-            
+
             int boardSize = int.Parse(inputString);
             m_Board = new Board(boardSize, boardSize);
         }

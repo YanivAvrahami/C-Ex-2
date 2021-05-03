@@ -43,7 +43,7 @@ namespace B21_Ex02
 
         public static void WriteUnderline(int i_Length)
         {
-            for(int i = 0; i < i_Length; i++)
+            for (int i = 0; i < i_Length; i++)
             {
                 Console.Write('-');
             }

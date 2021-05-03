@@ -28,7 +28,7 @@ namespace B21_Ex02
 
         public static bool HasCompleteSymbolSequence(Board i_Board, eSymbol i_Symbol, Position i_Pos)
         {
-            bool result = hasCompleteSymbolSequenceByOrientation(eOrientation.Horizontal, i_Board, i_Symbol, i_Pos) || 
+            bool result = hasCompleteSymbolSequenceByOrientation(eOrientation.Horizontal, i_Board, i_Symbol, i_Pos) ||
                           hasCompleteSymbolSequenceByOrientation(eOrientation.Vertical, i_Board, i_Symbol, i_Pos) ||
                           hasCompleteSymbolSequenceByOrientation(eOrientation.Ascending, i_Board, i_Symbol, i_Pos) ||
                           hasCompleteSymbolSequenceByOrientation(eOrientation.Decending, i_Board, i_Symbol, i_Pos);
@@ -48,11 +48,11 @@ namespace B21_Ex02
                 {
                     currentBoardItem = i_Board.GetItem(i_Pos.Row, i);
                 }
-                else if(i_Orientation == eOrientation.Vertical)
+                else if (i_Orientation == eOrientation.Vertical)
                 {
                     currentBoardItem = i_Board.GetItem(i, i_Pos.Column);
                 }
-                else if(i_Orientation == eOrientation.Ascending)
+                else if (i_Orientation == eOrientation.Ascending)
                 {
                     currentBoardItem = i_Board.GetItem(i_Board.Height - 1 - i, i);
                 }
