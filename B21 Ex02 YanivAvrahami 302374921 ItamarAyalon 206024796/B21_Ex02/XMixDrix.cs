@@ -241,21 +241,15 @@ namespace B21_Ex02
             int playMode;
             string inputString = Console.ReadLine();
 
-            while (!(isValidPlayModeChoice(inputString) || inputString == "Q"))
+            while (!(isValidPlayModeChoice(inputString)))
             {
                 ConsoleUtils.ReportInvalid(msg);
                 inputString = Console.ReadLine();
             }
-
-            if (inputString == "Q")
-            {
-                m_GameState = eGameState.Quit;
-            }
-            else
-            {
-                int.TryParse(inputString, out playMode);
-                m_PlayMode = (playMode == 1) ? ePlayMode.SinglePlayer : ePlayMode.MultiPlayer;
-            }
+                
+            int.TryParse(inputString, out playMode);
+            m_PlayMode = (playMode == 1) ? ePlayMode.SinglePlayer : ePlayMode.MultiPlayer;
+            
         }
 
         private void getBoardChoice()
@@ -265,21 +259,14 @@ namespace B21_Ex02
 
             string inputString = Console.ReadLine();
 
-            while (!(isValidBoardChoice(inputString) || inputString == "Q"))
+            while (!(isValidBoardChoice(inputString)))
             {
                 ConsoleUtils.ReportInvalid(msg);
                 inputString = Console.ReadLine();
             }
-
-            if (inputString == "Q")
-            {
-                m_GameState = eGameState.Quit;
-            }
-            else
-            {
-                int boardSize = int.Parse(inputString);
-                m_Board = new Board(boardSize, boardSize);
-            }
+            
+            int boardSize = int.Parse(inputString);
+            m_Board = new Board(boardSize, boardSize);
         }
 
         private bool isValidPlayModeChoice(string i_String)
