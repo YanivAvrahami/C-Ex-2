@@ -1,24 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Text;
+using Ex02.ConsoleUtils;
 
 namespace B21_Ex02
 {
     class XMixDrix
     {
         private bool m_Running;
+        private int m_Turn;
         private Board m_Board;
-        private Player m_PlayerOne;
-        private Player m_PlayerTwo;
-        private Player m_CurrentPlayerTurn;
-        private ePlayMode ePlayMode;
-        private eGameState eGameState;
+        private readonly List<BasePlayer> m_PlayersInGame;
+        private BasePlayer m_CurrentPlayerTurn;
+        private ePlayMode m_PlayMode;
+        private eGameState m_GameState;
 
         public XMixDrix()
         {
-            m_PlayerOne = null;
-            m_PlayerTwo = null;
+            m_PlayersInGame = new List<BasePlayer>(2);
             m_CurrentPlayerTurn = null;
             m_Running = true;
             m_Board = null;
@@ -35,14 +34,14 @@ namespace B21_Ex02
             getBoardChoice();
             getPlayModeChoice();
             createPlayers();
-            m_CurrentPlayerTurn = m_PlayerOne;
+            m_CurrentPlayerTurn = m_PlayersInGame[0];
         }
 
         private void startGame()
         {
-            render();
             while (m_Running)
             {
+                render();
                 update();
                 render();
             }
@@ -50,7 +49,6 @@ namespace B21_Ex02
 
         private void update()
         {
-            eGameState = eGameState.InProgress;
             handleCurrentTurn();
             setNextTurn();
             handleGameState();
@@ -58,150 +56,174 @@ namespace B21_Ex02
 
         private void render()
         {
-            BoardViewer.DisplayOnConsole(m_Board);
+            Screen.Clear();
+            Console.WriteLine(BoardViewer.GetBoardAsString(m_Board));
 
-            if (eGameState == eGameState.InProgress)
+            if (m_GameState == eGameState.InProgress)
             {
                 string underboardMsg = m_CurrentPlayerTurn.Name + " turn:";
                 Console.WriteLine(underboardMsg);
                 ConsoleUtils.WriteUnderline(underboardMsg.Length);
             }
-            else if (eGameState == eGameState.Win)
+            else if (m_GameState != eGameState.InProgress)
             {
                 displayScoreBoard();
+                handleAnotherGameChoice();
             }
         }
 
         private void createPlayers()
         {
-            if (ePlayMode == ePlayMode.SinglePlayer)
+            m_PlayersInGame.Add(new Player(eSymbol.X, "Player 1"));
+
+            if (m_PlayMode == ePlayMode.SinglePlayer)
             {
-                m_PlayerOne = new Player(eSymbol.O, ePlayerType.Human, "Player 1");
-                m_PlayerTwo = new Player(eSymbol.X, ePlayerType.Human, "Player 2");
+                m_PlayersInGame.Add(new NPC(eSymbol.O, "Computer", m_Board));
             }
             else
             {
-                m_PlayerOne = new Player(eSymbol.O, ePlayerType.Human, "Player 1");
-                m_PlayerTwo = new Player(eSymbol.X, ePlayerType.Computer, "Computer");
+                m_PlayersInGame.Add(new Player(eSymbol.O, "Player 2"));
             }
         }
 
         private void handleCurrentTurn()
         {
-            if (m_CurrentPlayerTurn.PlayerType == ePlayerType.Human)
+            if (m_CurrentPlayerTurn is Player currentPlayer)
             {
-                Position positionToSetItem = getPositionChoice();
+                Console.WriteLine("Enter row and col (R C): ");
+                string userInput;
+
+                do
+                {
+                    userInput = Console.ReadLine();
+
+                    if (isValidPositionStringInput(userInput))
+                    {
+                        break;
+                    }
+
+                    ConsoleUtils.ReportInvalid();
+                }
+                while (true);
+
+                if (userInput.ToLower() == "q")
+                {
+                    m_GameState = eGameState.Quit;
+                }
+                else
+                {
+                    Position positionToSetItem = Position.Parse(userInput);
+
+                    m_Board.SetItem(currentPlayer.Symbol, positionToSetItem);
+
+                    bool hasWon = BoardUtils.HasCompleteSymbolSequence(m_Board, currentPlayer.Symbol, positionToSetItem);
+
+                    if (hasWon)
+                    {
+                        m_GameState = eGameState.Win;
+                    }
+                    else if (BoardUtils.IsFull(m_Board))
+                    {
+                        m_GameState = eGameState.Draw;
+                    }
+                }
+            }
+            else if (m_CurrentPlayerTurn is NPC computer)
+            {
+                Position positionToSetItem = computer.RandomNextMove();
 
                 m_Board.SetItem(m_CurrentPlayerTurn.Symbol, positionToSetItem);
-                
                 bool hasWon = BoardUtils.HasCompleteSymbolSequence(m_Board, m_CurrentPlayerTurn.Symbol, positionToSetItem);
 
                 if (hasWon)
                 {
-                    eGameState = eGameState.Win;
+                    m_GameState = eGameState.Win;
                 }
                 else if (BoardUtils.IsFull(m_Board))
                 {
-                    eGameState = eGameState.Draw;
+                    m_GameState = eGameState.Draw;
                 }
-            }
-            else
-            {
-                
             }
         }
 
         private void handleGameState()
         {
-            if (eGameState != eGameState.InProgress)
+            if (m_GameState != eGameState.InProgress)
             {
-                if (eGameState == eGameState.Win)
+                if (m_GameState == eGameState.Win || m_GameState == eGameState.Quit)
                 {
                     m_CurrentPlayerTurn.Score++;
-                    displayScoreBoard();
-                }
-                else if (eGameState == eGameState.Draw)
-                {
-                    displayScoreBoard();
-                }
-                else
-                {
-                    m_Running = false;
                 }
 
-                bool wantExtraRound = getExtraRoundChoice();
-                if (wantExtraRound)
+                m_Turn = 0;
+                m_CurrentPlayerTurn = m_PlayersInGame[0];
+            }
+        }
+
+        private void handleAnotherGameChoice()
+        {
+            if (m_GameState != eGameState.InProgress)
+            {
+                if (m_Running)
                 {
-                    m_Board.Clear();
-                    Console.Clear();
-                    eGameState = eGameState.InProgress;
-                }
-                else
-                {
-                    m_Running = false;
+                    bool wantExtraRound = getExtraRoundChoice();
+                    if (wantExtraRound)
+                    {
+                        m_Board.Clear();
+                        m_GameState = eGameState.InProgress;
+                    }
+                    else
+                    {
+                        m_Running = false;
+                    }
                 }
             }
         }
 
         private void setNextTurn()
         {
-            if(ePlayMode == ePlayMode.SinglePlayer)
-            {
-                m_CurrentPlayerTurn = (m_CurrentPlayerTurn == m_PlayerOne) ? m_PlayerTwo : m_PlayerOne;
-            }
+            m_Turn++;
+            int playerTurn = m_Turn % m_PlayersInGame.Count;
+
+            m_CurrentPlayerTurn = m_PlayersInGame[playerTurn];
         }
 
-        private Position getPositionChoice()
+        private bool isValidPositionStringInput(string i_userInput)
         {
-            Position pos = new Position();
+            string[] words = i_userInput.Split(' ');
+            bool isValid = false;
 
-            do
+            if (words.Length == 2)
             {
-                string msg1 = "Row: ";
-                Console.Write(msg1);
-                int row;
-                while(!int.TryParse(Console.ReadLine(), out row) || pos.Row > m_Board.Height || pos.Row < 0)
+                if (int.TryParse(words[0], out int row) && int.TryParse(words[1], out int col))
                 {
-                    ConsoleUtils.ReportInvalid(msg1);
-                }
-                pos.Row = row;
-                pos.Row--;
-
-
-                ConsoleUtils.ClearLine(0);
-                Console.SetCursorPosition(msg1.Length + 3, Console.CursorTop - 1);
-
-
-                string msg2 = "Col: ";
-                Console.Write(msg2);
-                int col;
-                while (!int.TryParse(Console.ReadLine(), out col) || pos.Column > m_Board.Width || pos.Column < 0)
-                {
-                    ConsoleUtils.ReportInvalid(msg1 + row + "  " + msg2);
-                }
-                pos.Column = col;
-                pos.Column--;
-
-
-                if (m_Board.IsOccupied(pos.Row, pos.Column))
-                {
-                    ConsoleUtils.ReportInvalid(msg1 + row + "  " + msg2 + col);
-                    ConsoleUtils.ClearLine(0);
+                    if (isValidPositionInput(row - 1, col - 1))
+                    {
+                        isValid = true;
+                    }
                 }
             }
-            while(m_Board.IsOccupied(pos.Row, pos.Column));
+            else if (i_userInput.ToLower() == "q")
+            {
+                isValid = true;
+            }
 
-            return pos;
+            return isValid;
+        }
+
+        private bool isValidPositionInput(int i_Row, int i_Col)
+        {
+            return ((0 <= i_Row && i_Row < m_Board.Height) &&
+                (0 <= i_Col && i_Col < m_Board.Width) &&
+                !m_Board.IsOccupied(i_Row, i_Col));
         }
 
         private bool getExtraRoundChoice()
         {
-            bool isExtraRound = false;
-
             Console.WriteLine("Want to play more? (y/n): ");
-
             string stringInput = Console.ReadLine();
             char answer = stringInput[0];
+            bool isExtraRound = false;
 
             if(answer == 'y')
             {
@@ -216,8 +238,7 @@ namespace B21_Ex02
             string msg = "Enter play mode (1-singleplayer, 2-multiplayer): ";
             Console.Write(msg);
 
-            int playMode = 0;
-
+            int playMode;
             string inputString = Console.ReadLine();
 
             while (!(isValidPlayModeChoice(inputString) || inputString == "Q"))
@@ -228,13 +249,13 @@ namespace B21_Ex02
 
             if (inputString == "Q")
             {
-                eGameState = eGameState.Quit;
+                m_GameState = eGameState.Quit;
             }
             else
             {
-                ePlayMode = (playMode == 1) ? ePlayMode.SinglePlayer : ePlayMode.MultiPlayer;
+                int.TryParse(inputString, out playMode);
+                m_PlayMode = (playMode == 1) ? ePlayMode.SinglePlayer : ePlayMode.MultiPlayer;
             }
-
         }
 
         private void getBoardChoice()
@@ -252,7 +273,7 @@ namespace B21_Ex02
 
             if (inputString == "Q")
             {
-                eGameState = eGameState.Quit;
+                m_GameState = eGameState.Quit;
             }
             else
             {
@@ -274,14 +295,14 @@ namespace B21_Ex02
         private void displayScoreBoard()
         {
             StringBuilder stringToDisplay = new StringBuilder();
-            stringToDisplay.Append("Score Board");
-            stringToDisplay.AppendLine();
-            stringToDisplay.Append("-----------");
-            stringToDisplay.AppendLine();
-            stringToDisplay.Append($"Name: {m_PlayerOne.Name}  Score: {m_PlayerOne.Score}");
-            stringToDisplay.AppendLine();
-            stringToDisplay.Append($"Name: {m_PlayerTwo.Name}  Score: {m_PlayerTwo.Score}");
-            stringToDisplay.AppendLine();
+
+            stringToDisplay.AppendLine("Score Board");
+            stringToDisplay.AppendLine("-----------");
+            foreach (var player in m_PlayersInGame)
+            {
+                stringToDisplay.AppendLine($"Name: {player.Name}  Score: {player.Score}");
+            }
+
             Console.WriteLine(stringToDisplay);
         }
     }

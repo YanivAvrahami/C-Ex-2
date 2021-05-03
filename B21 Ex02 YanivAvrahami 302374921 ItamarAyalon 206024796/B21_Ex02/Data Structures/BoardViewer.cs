@@ -5,9 +5,8 @@ namespace B21_Ex02
 {
     public class BoardViewer
     {
-        public static void DisplayOnConsole(Board i_Board)
+        public static string GetBoardAsString(Board i_Board)
         {
-            Console.Clear();
             StringBuilder boardStrBuilder = new StringBuilder();
 
             buildFirstRowColumns(boardStrBuilder, i_Board.Width);
@@ -19,7 +18,7 @@ namespace B21_Ex02
                 buildNewLine(boardStrBuilder, i_Board.Width);
             }
 
-            Console.WriteLine(boardStrBuilder);
+            return boardStrBuilder.ToString();
         }
 
         private static void buildFirstRowColumns(StringBuilder i_BoardStrBuiler, int i_Columns)

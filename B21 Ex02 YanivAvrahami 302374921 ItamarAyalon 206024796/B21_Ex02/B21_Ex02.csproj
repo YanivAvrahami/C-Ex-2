@@ -34,6 +34,7 @@
   <ItemGroup>
     <Compile Include="BoardUtils.cs" />
     <Compile Include="ConsoleUtils.cs" />
+    <Compile Include="Data Structures\BasePlayer.cs" />
     <Compile Include="Data Structures\Board.cs" />
     <Compile Include="Data Structures\BoardViewer.cs" />
     <Compile Include="Data Structures\NPC.cs" />
@@ -46,6 +47,11 @@
     <Compile Include="Position.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="XMixDrix.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Ex02.ConsoleUtils">
+      <HintPath>..\..\..\..\..\..\Temp\Ex02.ConsoleUtils.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -16,14 +16,24 @@ namespace B21_Ex02
             Console.CursorTop -= i_Offset;
         }
 
-        public static void ReportInvalid(string msg)
+        public static void ReportInvalid(string i_SameMessage)
         {
             Console.SetCursorPosition(0, Console.CursorTop - 1);
-            ConsoleUtils.ClearLine(0);
-            Console.WriteLine(msg);
+            ClearLine(0);
+            Console.WriteLine(i_SameMessage);
             Console.Write("Invalid input");
             Console.CursorTop--;
-            Console.CursorLeft = msg.Length;
+            Console.CursorLeft = i_SameMessage.Length;
+        }
+
+        public static void ReportInvalid()
+        {
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            ClearLine(0);
+            Console.WriteLine();
+            Console.Write("Invalid input");
+            Console.CursorTop--;
+            Console.CursorLeft = 0;
         }
 
         public static void RemoveReportInvalid()
@@ -31,9 +41,9 @@ namespace B21_Ex02
             ClearLine(1);
         }
 
-        public static void WriteUnderline(int length)
+        public static void WriteUnderline(int i_Length)
         {
-            for(int i = 0; i < length; i++)
+            for(int i = 0; i < i_Length; i++)
             {
                 Console.Write('-');
             }

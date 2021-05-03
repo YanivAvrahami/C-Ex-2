@@ -9,26 +9,14 @@
 
             public eSymbol Symbol
             {
-                get
-                {
-                    return m_Symbol;
-                }
-                set
-                {
-                    m_Symbol = value;
-                }
+                get { return m_Symbol; }
+                set { m_Symbol = value; }
             }
 
             public bool IsOccupied
             {
-                get
-                {
-                    return m_IsOccupied;
-                }
-                set
-                {
-                    m_IsOccupied = value;
-                }
+                get { return m_IsOccupied; }
+                set { m_IsOccupied = value; }
             }
 
             public BoardItem(eSymbol i_Symbol)
