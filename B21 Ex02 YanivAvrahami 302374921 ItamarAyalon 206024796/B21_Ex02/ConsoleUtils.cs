@@ -30,5 +30,14 @@ namespace B21_Ex02
         {
             ClearLine(1);
         }
+
+        public static void WriteUnderline(int length)
+        {
+            for(int i = 0; i < length; i++)
+            {
+                Console.Write('-');
+            }
+            Console.WriteLine("");
+        }
     }
 }

@@ -37,7 +37,7 @@ namespace B21_Ex02
         private static bool hasCompleteSymbolSequenceByOrientation(eOrientation i_Orientation, Board i_Board, eSymbol i_Symbol, Position i_Pos)
         {
             bool result = true;
-
+            BoardViewer.DisplayOnConsole(i_Board);
             int size = (i_Orientation == eOrientation.Horizontal) ? i_Board.Width : i_Board.Height;
 
             for (int i = 0; i < i_Board.Width; i++)
@@ -50,7 +50,7 @@ namespace B21_Ex02
                 }
                 else if(i_Orientation == eOrientation.Vertical)
                 {
-                    currentBoardItem = i_Board.GetItem(i_Pos.Column, i);
+                    currentBoardItem = i_Board.GetItem(i, i_Pos.Column);
                 }
                 else if(i_Orientation == eOrientation.Ascending)
                 {

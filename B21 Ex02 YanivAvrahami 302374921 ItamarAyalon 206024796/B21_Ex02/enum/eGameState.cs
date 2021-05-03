@@ -5,6 +5,6 @@
         InProgress,
         Win,
         Draw,
-        Left
+        Quit
     }
 }
