@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace B21_Ex02
+﻿namespace B21_Ex02
 {
     public class BoardUtils
     {
         public static bool IsFull(Board i_Board)
         {
-            // retrun TODO: i_Board.isFull()
-
             bool isFull = true;
 
             for (int i = 0; i < i_Board.Height; i++)
@@ -39,29 +33,32 @@ namespace B21_Ex02
         private static bool hasCompleteSymbolSequenceByOrientation(eOrientation i_Orientation, Board i_Board, eSymbol i_Symbol, Position i_Pos)
         {
             bool result = true;
+            int row, col;
 
             for (int i = 0; i < i_Board.Width; i++)
             {
-                Board.BoardItem currentBoardItem;
-
                 if (i_Orientation == eOrientation.Horizontal)
                 {
-                    currentBoardItem = i_Board.GetItem(i_Pos.Row, i);
+                    row = i_Pos.Row;
+                    col = i;
                 }
                 else if (i_Orientation == eOrientation.Vertical)
                 {
-                    currentBoardItem = i_Board.GetItem(i, i_Pos.Column);
+                    row = i;
+                    col = i_Pos.Column;
                 }
                 else if (i_Orientation == eOrientation.Ascending)
                 {
-                    currentBoardItem = i_Board.GetItem(i_Board.Height - 1 - i, i);
+                    row = i_Board.Height - 1 - i;
+                    col = i;
                 }
                 else
                 {
-                    currentBoardItem = i_Board.GetItem(i, i);
+                    row = i;
+                    col = i;
                 }
 
-                if (!currentBoardItem.IsOccupied || currentBoardItem.Symbol != i_Symbol)
+                if (!i_Board.IsOccupied(row, col) || i_Board.GetItem(row, col) != i_Symbol)
                 {
                     result = false;
                     break;

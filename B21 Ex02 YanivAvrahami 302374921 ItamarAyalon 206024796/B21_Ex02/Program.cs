@@ -4,8 +4,8 @@
     {
         public static void Main()
         {
-            XMixDrix xMixDrix = new XMixDrix();
-            xMixDrix.Start();
+            UI ui = new UI();
+            ui.Run();
         }
     }
 }

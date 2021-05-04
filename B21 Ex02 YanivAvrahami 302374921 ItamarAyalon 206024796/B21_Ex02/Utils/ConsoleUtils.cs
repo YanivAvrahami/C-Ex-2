@@ -36,11 +36,6 @@ namespace B21_Ex02
             Console.CursorLeft = 0;
         }
 
-        public static void RemoveReportInvalid()
-        {
-            ClearLine(1);
-        }
-
         public static void WriteUnderline(int i_Length)
         {
             for (int i = 0; i < i_Length; i++)

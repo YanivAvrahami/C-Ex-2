@@ -2,9 +2,8 @@
 {
     public class Board
     {
-        public struct BoardItem
+        private struct BoardItem
         {
-            private bool m_IsOccupied;
             private eSymbol m_Symbol;
 
             public eSymbol Symbol
@@ -13,49 +12,37 @@
                 set { m_Symbol = value; }
             }
 
-            public bool IsOccupied
-            {
-                get { return m_IsOccupied; }
-                set { m_IsOccupied = value; }
-            }
-
             public BoardItem(eSymbol i_Symbol)
             {
-                m_IsOccupied = true;
                 m_Symbol = i_Symbol;
             }
         }
 
-        private readonly BoardItem[,] m_Board;
-        private readonly int m_Width;
+        private readonly BoardItem?[,] m_Board;
+        private readonly int m_Width; // TODO: CHANGE ALL readonly NAMEING SYNTAX
         private readonly int m_Height;
+
 
         public int Width
         {
-            get
-            {
-                return m_Width;
-            }
+            get { return m_Width; }
         }
 
         public int Height
         {
-            get
-            {
-                return m_Height;
-            }
+            get { return m_Height; }
         }
 
         public Board(int i_Rows, int i_Columns)
         {
             m_Width = i_Columns;
             m_Height = i_Rows;
-            m_Board = new BoardItem[i_Rows, i_Columns];
+            m_Board = new BoardItem?[i_Rows, i_Columns];
         }
 
         public void SetItem(eSymbol i_Symbol, Position i_Pos)
         {
-            m_Board[i_Pos.Row, i_Pos.Column] = new BoardItem(i_Symbol);
+            SetItem(i_Symbol, i_Pos.Row, i_Pos.Column);
         }
 
         public void SetItem(eSymbol i_Symbol, int i_Row, int i_Col)
@@ -63,26 +50,24 @@
             m_Board[i_Row, i_Col] = new BoardItem(i_Symbol);
         }
 
-
         public eSymbol GetItem(Position i_Pos)
         {
-            return m_Board[i_Pos.Row, i_Pos.Column].Symbol;
+            return GetItem(i_Pos.Row, i_Pos.Column);
         }
 
-        public BoardItem GetItem(int i_Row, int i_Col)
+        public eSymbol GetItem(int i_Row, int i_Col)
         {
-            return m_Board[i_Row, i_Col];
+            return m_Board[i_Row, i_Col].Value.Symbol;
         }
-
 
         public void Delete(Position i_Pos)
         {
-            m_Board[i_Pos.Row, i_Pos.Column].IsOccupied = false;
+            Delete(i_Pos.Row, i_Pos.Column);
         }
 
         public void Delete(int i_Row, int i_Col)
         {
-            m_Board[i_Row, i_Col].IsOccupied = false;
+            m_Board[i_Row, i_Col] = null;
         }
 
 
@@ -99,7 +84,7 @@
 
         public bool IsOccupied(int i_Row, int i_Column)
         {
-            return m_Board[i_Row, i_Column].IsOccupied;
+            return m_Board[i_Row, i_Column] != null;
         }
     }
 }

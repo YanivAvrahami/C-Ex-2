@@ -38,7 +38,7 @@ namespace B21_Ex02
             {
                 if (i_Board.IsOccupied(i_Row, column) == true)
                 {
-                    i_BoardStrBuiler.Append($" {i_Board.GetItem(i_Row, column).Symbol} |");
+                    i_BoardStrBuiler.Append($" {i_Board.GetItem(i_Row, column)} |");
                 }
                 else
                 {

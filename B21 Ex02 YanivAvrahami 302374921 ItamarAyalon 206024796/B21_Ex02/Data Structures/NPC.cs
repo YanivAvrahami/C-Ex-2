@@ -6,8 +6,8 @@ namespace B21_Ex02
     {
         private readonly Board m_Board;
 
-        public NPC(eSymbol i_Symbol, string i_Name, Board i_Board) :
-            base(i_Symbol, i_Name)
+        public NPC(eSymbol i_Symbol, string i_Name, Board i_Board)
+            : base(i_Symbol, i_Name)
         {
             m_Board = i_Board;
         }

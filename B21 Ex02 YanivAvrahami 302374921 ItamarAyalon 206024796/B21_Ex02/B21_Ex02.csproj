@@ -32,6 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Core\UI.cs" />
+    <Compile Include="Core\XMixDrixReverseEngine.cs" />
     <Compile Include="Utils\BoardUtils.cs" />
     <Compile Include="Utils\ConsoleUtils.cs" />
     <Compile Include="Data Structures\BasePlayer.cs" />
@@ -46,7 +48,6 @@
     <Compile Include="Enum\ePlayerType.cs" />
     <Compile Include="Data Structures\Position.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Core\XMixDrix.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Ex02.ConsoleUtils">
