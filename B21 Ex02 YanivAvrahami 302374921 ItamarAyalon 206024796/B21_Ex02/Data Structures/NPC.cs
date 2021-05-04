@@ -4,12 +4,12 @@ namespace B21_Ex02
 {
     public class NPC : BasePlayer
     {
-        private readonly Board m_Board;
+        private readonly Board r_Board;
 
         public NPC(eSymbol i_Symbol, string i_Name, Board i_Board)
             : base(i_Symbol, i_Name)
         {
-            m_Board = i_Board;
+            r_Board = i_Board;
         }
 
         public Position RandomNextMove()
@@ -20,10 +20,10 @@ namespace B21_Ex02
 
             do
             {
-                row = rnd.Next(m_Board.Height);
-                col = rnd.Next(m_Board.Width);
+                row = rnd.Next(r_Board.Height);
+                col = rnd.Next(r_Board.Width);
             }
-            while (m_Board.IsOccupied(row, col));
+            while (r_Board.IsOccupied(row, col));
 
             return new Position(row, col);
         }

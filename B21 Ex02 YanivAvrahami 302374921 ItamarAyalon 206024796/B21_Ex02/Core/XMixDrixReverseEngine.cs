@@ -7,8 +7,8 @@ namespace B21_Ex02
         private bool m_IsGameRunning;   // was m_Running
         private int m_CurrentTurn;      // was m_Turn
         private Board m_Board;
-        private readonly int m_MaxNumberOfPlayers;
-        private readonly List<BasePlayer> m_PlayersInGame;
+        private readonly int r_MaxNumberOfPlayers;
+        private readonly List<BasePlayer> r_PlayersInGame;
         private BasePlayer m_CurrentPlayerTurn;
         private ePlayMode m_PlayMode;
         private eGameState m_GameState;
@@ -36,12 +36,12 @@ namespace B21_Ex02
 
         public int MaxNumberOfPlayers
         {
-            get { return m_MaxNumberOfPlayers; }
+            get { return r_MaxNumberOfPlayers; }
         }
 
         public List<BasePlayer> PlayersInGame
         {
-            get { return m_PlayersInGame; }
+            get { return r_PlayersInGame; }
         }
 
         public ePlayMode PlayMode
@@ -80,8 +80,8 @@ namespace B21_Ex02
 
         public XMixDrixReverseEngine(int i_MaxPlayers)
         {
-            m_MaxNumberOfPlayers = i_MaxPlayers;
-            m_PlayersInGame = new List<BasePlayer>(MaxNumberOfPlayers);
+            r_MaxNumberOfPlayers = i_MaxPlayers;
+            r_PlayersInGame = new List<BasePlayer>(MaxNumberOfPlayers);
         }
 
         #endregion
@@ -124,7 +124,7 @@ namespace B21_Ex02
             Board.Clear();
             m_IsGameRunning = true;
             m_CurrentTurn = 0;
-            m_CurrentPlayerTurn = m_PlayersInGame[0];
+            m_CurrentPlayerTurn = r_PlayersInGame[0];
             m_GameState = eGameState.InProgress;
         }
 

@@ -18,26 +18,26 @@
             }
         }
 
-        private readonly BoardItem?[,] m_Board;
-        private readonly int m_Width; // TODO: CHANGE ALL readonly NAMEING SYNTAX
-        private readonly int m_Height;
+        private readonly BoardItem?[,] r_Board;
+        private readonly int r_Width; // TODO: CHANGE ALL readonly NAMEING SYNTAX
+        private readonly int r_Height;
 
 
         public int Width
         {
-            get { return m_Width; }
+            get { return r_Width; }
         }
 
         public int Height
         {
-            get { return m_Height; }
+            get { return r_Height; }
         }
 
         public Board(int i_Rows, int i_Columns)
         {
-            m_Width = i_Columns;
-            m_Height = i_Rows;
-            m_Board = new BoardItem?[i_Rows, i_Columns];
+            r_Width = i_Columns;
+            r_Height = i_Rows;
+            r_Board = new BoardItem?[i_Rows, i_Columns];
         }
 
         public void SetItem(eSymbol i_Symbol, Position i_Pos)
@@ -47,7 +47,7 @@
 
         public void SetItem(eSymbol i_Symbol, int i_Row, int i_Col)
         {
-            m_Board[i_Row, i_Col] = new BoardItem(i_Symbol);
+            r_Board[i_Row, i_Col] = new BoardItem(i_Symbol);
         }
 
         public eSymbol GetItem(Position i_Pos)
@@ -57,7 +57,7 @@
 
         public eSymbol GetItem(int i_Row, int i_Col)
         {
-            return m_Board[i_Row, i_Col].Value.Symbol;
+            return r_Board[i_Row, i_Col].Value.Symbol;
         }
 
         public void Delete(Position i_Pos)
@@ -67,15 +67,15 @@
 
         public void Delete(int i_Row, int i_Col)
         {
-            m_Board[i_Row, i_Col] = null;
+            r_Board[i_Row, i_Col] = null;
         }
 
 
         public void Clear()
         {
-            for (int i = 0; i < m_Width; i++)
+            for (int i = 0; i < r_Width; i++)
             {
-                for (int j = 0; j < m_Height; j++)
+                for (int j = 0; j < r_Height; j++)
                 {
                     Delete(i, j);
                 }
@@ -84,7 +84,7 @@
 
         public bool IsOccupied(int i_Row, int i_Column)
         {
-            return m_Board[i_Row, i_Column] != null;
+            return r_Board[i_Row, i_Column] != null;
         }
     }
 }
