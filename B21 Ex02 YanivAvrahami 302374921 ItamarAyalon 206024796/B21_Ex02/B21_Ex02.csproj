@@ -45,7 +45,6 @@
     <Compile Include="Enum\ePlayMode.cs" />
     <Compile Include="Enum\eSymbol.cs" />
     <Compile Include="Data Structures\Player.cs" />
-    <Compile Include="Enum\ePlayerType.cs" />
     <Compile Include="Data Structures\Position.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
