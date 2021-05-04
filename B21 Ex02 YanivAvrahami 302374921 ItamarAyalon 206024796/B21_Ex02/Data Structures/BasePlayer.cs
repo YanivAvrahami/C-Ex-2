@@ -12,7 +12,7 @@
             set { m_Name = value; }
         }
 
-        virtual public int Score
+        public int Score
         {
             get { return m_Score; }
             set { m_Score = value; }

@@ -42,8 +42,8 @@ namespace B21_Ex02
             while (m_Running)
             {
                 render();
-                update();
-                render();
+                // TODO: add userInput to get all the information from the user, without any logic.;
+                update(); // TODO: At first check the input from the user and than decide how to act (update or skip the update)
             }
         }
 
@@ -92,19 +92,19 @@ namespace B21_Ex02
             {
                 Console.WriteLine("Enter row and col (R C): ");
                 string userInput;
+                bool isValidInput;
 
                 do
                 {
                     userInput = Console.ReadLine();
 
-                    if (isValidPositionStringInput(userInput))
+                    isValidInput = isValidPositionStringInput(userInput);
+                    if (!isValidInput)
                     {
-                        break;
+                        ConsoleUtils.ReportInvalid();
                     }
-
-                    ConsoleUtils.ReportInvalid();
                 }
-                while (true);
+                while (!isValidInput);
 
                 if (userInput.ToLower() == "q")
                 {
@@ -112,37 +112,27 @@ namespace B21_Ex02
                 }
                 else
                 {
-                    Position positionToSetItem = Position.Parse(userInput);
-
-                    m_Board.SetItem(currentPlayer.Symbol, positionToSetItem);
-
-                    bool hasWon = BoardUtils.HasCompleteSymbolSequence(m_Board, currentPlayer.Symbol, positionToSetItem);
-
-                    if (hasWon)
-                    {
-                        m_GameState = eGameState.Win;
-                    }
-                    else if (BoardUtils.IsFull(m_Board))
-                    {
-                        m_GameState = eGameState.Draw;
-                    }
+                    PlayerMove(Position.Parse(userInput));
                 }
             }
             else if (m_CurrentPlayerTurn is NPC computer)
             {
-                Position positionToSetItem = computer.RandomNextMove();
+                PlayerMove(computer.RandomNextMove());
+            }
+        }
 
-                m_Board.SetItem(m_CurrentPlayerTurn.Symbol, positionToSetItem);
-                bool hasWon = BoardUtils.HasCompleteSymbolSequence(m_Board, m_CurrentPlayerTurn.Symbol, positionToSetItem);
+        private void PlayerMove(Position i_Position)
+        {
+            m_Board.SetItem(m_CurrentPlayerTurn.Symbol, i_Position);
+            bool hasWon = BoardUtils.HasCompleteSymbolSequence(m_Board, m_CurrentPlayerTurn.Symbol, i_Position);
 
-                if (hasWon)
-                {
-                    m_GameState = eGameState.Win;
-                }
-                else if (BoardUtils.IsFull(m_Board))
-                {
-                    m_GameState = eGameState.Draw;
-                }
+            if (hasWon)
+            {
+                m_GameState = eGameState.Win;
+            }
+            else if (BoardUtils.IsFull(m_Board))
+            {
+                m_GameState = eGameState.Draw;
             }
         }
 
@@ -167,6 +157,7 @@ namespace B21_Ex02
                 if (m_Running)
                 {
                     bool wantExtraRound = getExtraRoundChoice();
+
                     if (wantExtraRound)
                     {
                         m_Board.Clear();
@@ -218,14 +209,32 @@ namespace B21_Ex02
                 !m_Board.IsOccupied(i_Row, i_Col));
         }
 
+        private bool isYesOrNo(string i_String)
+        {
+            return i_String.ToLower() == "yes" || i_String.ToLower() == "y" ||
+                   i_String.ToLower() == "no" || i_String.ToLower() == "n";
+        }
+
         private bool getExtraRoundChoice()
         {
             Console.WriteLine("Want to play more? (y/n): ");
-            string stringInput = Console.ReadLine();
-            char answer = stringInput[0];
             bool isExtraRound = false;
+            bool isValidInput;
+            string userInput;
 
-            if (answer == 'y')
+            do
+            {
+                userInput = Console.ReadLine();
+
+                isValidInput = isYesOrNo(userInput);
+                if (!isValidInput)
+                {
+                    ConsoleUtils.ReportInvalid();
+                }
+            }
+            while (!isValidInput);
+
+            if (userInput.ToLower() == "yes" || userInput.ToLower() == "y")
             {
                 isExtraRound = true;
             }
@@ -249,7 +258,6 @@ namespace B21_Ex02
 
             int.TryParse(inputString, out playMode);
             m_PlayMode = (playMode == 1) ? ePlayMode.SinglePlayer : ePlayMode.MultiPlayer;
-
         }
 
         private void getBoardChoice()
