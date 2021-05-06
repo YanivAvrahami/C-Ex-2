@@ -179,7 +179,7 @@ namespace B21_Ex02
 
         private void playMove(Position i_Position)
         {
-            Board.SetItem(CurrentPlayerTurn.Symbol, i_Position);
+            Board.SetItem(CurrentPlayerTurn.Symbol, i_Position.Row, i_Position.Column);
             bool hasWon = BoardUtils.HasCompleteSymbolSequence(Board, CurrentPlayerTurn.Symbol, i_Position);
 
             if (hasWon)

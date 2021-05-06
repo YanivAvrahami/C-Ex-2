@@ -19,9 +19,8 @@
         }
 
         private readonly BoardItem?[,] r_Board;
-        private readonly int r_Width; // TODO: CHANGE ALL readonly NAMEING SYNTAX
+        private readonly int r_Width;
         private readonly int r_Height;
-
 
         public int Width
         {
@@ -40,19 +39,9 @@
             r_Board = new BoardItem?[i_Rows, i_Columns];
         }
 
-        public void SetItem(eSymbol i_Symbol, Position i_Pos)
-        {
-            SetItem(i_Symbol, i_Pos.Row, i_Pos.Column);
-        }
-
         public void SetItem(eSymbol i_Symbol, int i_Row, int i_Col)
         {
             r_Board[i_Row, i_Col] = new BoardItem(i_Symbol);
-        }
-
-        public eSymbol GetItem(Position i_Pos)
-        {
-            return GetItem(i_Pos.Row, i_Pos.Column);
         }
 
         public eSymbol GetItem(int i_Row, int i_Col)
@@ -60,16 +49,10 @@
             return r_Board[i_Row, i_Col].Value.Symbol;
         }
 
-        public void Delete(Position i_Pos)
-        {
-            Delete(i_Pos.Row, i_Pos.Column);
-        }
-
         public void Delete(int i_Row, int i_Col)
         {
             r_Board[i_Row, i_Col] = null;
         }
-
 
         public void Clear()
         {
