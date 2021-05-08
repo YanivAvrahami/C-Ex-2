@@ -7,12 +7,11 @@ namespace B21_Ex02
         public static void ClearLine(int i_Offset)
         {
             Console.CursorTop += i_Offset;
-
             int currentLineCursor = Console.CursorTop;
+
             Console.SetCursorPosition(0, Console.CursorTop);
             Console.Write(new string(' ', Console.WindowWidth));
             Console.SetCursorPosition(0, currentLineCursor);
-
             Console.CursorTop -= i_Offset;
         }
 
@@ -42,6 +41,7 @@ namespace B21_Ex02
             {
                 Console.Write('-');
             }
+
             Console.WriteLine("");
         }
     }
