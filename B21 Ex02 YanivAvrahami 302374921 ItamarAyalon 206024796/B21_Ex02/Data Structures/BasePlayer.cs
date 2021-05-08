@@ -1,6 +1,6 @@
 ﻿namespace B21_Ex02
 {
-    public class BasePlayer
+    public abstract class BasePlayer
     {
         private string m_Name;
         private int m_Score;
