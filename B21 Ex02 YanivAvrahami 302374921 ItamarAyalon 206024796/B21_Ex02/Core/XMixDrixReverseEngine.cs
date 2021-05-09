@@ -71,15 +71,11 @@ namespace B21_Ex02
             private set { m_CurrentTurn = value; }
         }
 
-        #region Constructor
-
         public XMixDrixReverseEngine(int i_MaxPlayers)
         {
             r_MaxNumberOfPlayers = i_MaxPlayers;
             r_PlayersInGame = new List<BasePlayer>(MaxNumberOfPlayers);
         }
-
-        #endregion
 
         public void SetBoardSize(int i_NumberOfRows, int i_NumberOfCols)
         {

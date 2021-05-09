@@ -7,17 +7,17 @@ namespace B21_Ex02
     public class UI
     {
         private readonly XMixDrixReverseEngine r_GameEngine;
-        private bool m_playing;
+        private bool m_Playing;
 
         public UI()
         {
-            m_playing = false;
+            m_Playing = false;
             r_GameEngine = new XMixDrixReverseEngine(2);
         }
 
         public void Run()
         {
-            m_playing = true;
+            m_Playing = true;
             startMenu();
             startGame();
         }
@@ -34,7 +34,7 @@ namespace B21_Ex02
             r_GameEngine.StartNewGame();
             render();
 
-            while (m_playing)
+            while (m_Playing)
             {
                 update();
                 render();
@@ -86,7 +86,7 @@ namespace B21_Ex02
                 }
                 else
                 {
-                    m_playing = false;
+                    m_Playing = false;
                 }
             }
         }
@@ -97,6 +97,7 @@ namespace B21_Ex02
             bool isExtraRound = false;
             bool isValidInput = false;
             string userInput;
+
             do
             {
                 userInput = Console.ReadLine();
