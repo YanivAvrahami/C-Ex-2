@@ -2,7 +2,7 @@
 Exercise No...........: 2
 First Student Details.: 302374921 - Yaniv Avrahami
 Second Student Details: 206024796 - Itamar Ayalon
-Delivery Date.........: 05 - May - 2021
+Delivery Date.........: 09 - May - 2021
 Delivered In Delay....: 
 Delay Reason..........: 
 Visual Studio Version.: 2019
