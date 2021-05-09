@@ -4,17 +4,14 @@ namespace B21_Ex02
 {
     public class XMixDrixReverseEngine
     {
-        private bool m_IsGameRunning;   // was m_Running
-        private int m_CurrentTurn;      // was m_Turn
+        private bool m_IsGameRunning;
+        private int m_CurrentTurn;
         private Board m_Board;
         private readonly int r_MaxNumberOfPlayers;
         private readonly List<BasePlayer> r_PlayersInGame;
         private BasePlayer m_CurrentPlayerTurn;
         private ePlayMode m_PlayMode;
         private eGameState m_GameState;
-
-
-        #region Public Properties
 
         public Board Board
         { 
@@ -74,8 +71,6 @@ namespace B21_Ex02
             private set { m_CurrentTurn = value; }
         }
 
-        #endregion
-
         #region Constructor
 
         public XMixDrixReverseEngine(int i_MaxPlayers)
@@ -91,7 +86,7 @@ namespace B21_Ex02
             Board = new Board(i_NumberOfRows, i_NumberOfCols);
         }
 
-        public void SetPlayMode(int i_PlayMode)
+        public void SetPlayModeByIdx(int i_PlayMode)
         {
             if (i_PlayMode == 1)
             {
@@ -116,22 +111,20 @@ namespace B21_Ex02
 
         public void StartNewGame()
         {
-            if (PlayersInGame.Count == 0)
+            if (PlayersInGame.Count != 0)
             {
-                // throw exception
+                Board.Clear();
+                m_IsGameRunning = true;
+                m_CurrentTurn = 0;
+                m_CurrentPlayerTurn = r_PlayersInGame[0];
+                m_GameState = eGameState.InProgress;
             }
-
-            Board.Clear();
-            m_IsGameRunning = true;
-            m_CurrentTurn = 0;
-            m_CurrentPlayerTurn = r_PlayersInGame[0];
-            m_GameState = eGameState.InProgress;
         }
 
-        public bool PlayTurnByInput(string i_userInput)
+        public bool PlayTurnByInput(string i_UserInput)
         {
-            string[] words = i_userInput.Split(' ');
-            bool isValid = false;
+            string[] words = i_UserInput.Split(' ');
+            bool isValidInput = false;
 
             if (words.Length == 2)
             {
@@ -139,18 +132,18 @@ namespace B21_Ex02
                 {
                     if (isValidPosition(row - 1, col - 1))
                     {
-                        isValid = true;
+                        isValidInput = true;
                     }
                 }
             }
-            else if (i_userInput.ToLower() == "q")
+            else if (i_UserInput.ToLower() == "q")
             {
-                isValid = true;
+                isValidInput = true;
             }
 
-            if (isValid)
+            if (isValidInput)
             {
-                nextActionOnPlayerInput(i_userInput);
+                nextActionOnPlayerInput(i_UserInput);
                 if (CurrentPlayerTurn is NPC npcTurn)
                 {
                     playMove(npcTurn.RandomNextMove());
@@ -159,7 +152,7 @@ namespace B21_Ex02
                 }
             }
 
-            return isValid;
+            return isValidInput;
         }
 
         private void nextActionOnPlayerInput(string i_PlayerInputStr)

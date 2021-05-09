@@ -168,7 +168,7 @@ namespace B21_Ex02
             }
             while (!isValidInput);
 
-            r_GameEngine.SetPlayMode(playMode);
+            r_GameEngine.SetPlayModeByIdx(playMode);
         }
 
         private bool isYesOrNo(string i_String)
